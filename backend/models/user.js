@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import Car from "./cars.js";
+
 const userSchema = new mongoose.Schema({
     name: {
         type: String,

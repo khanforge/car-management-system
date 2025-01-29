@@ -1,17 +1,18 @@
 // Initialize express router
-import jwt from jsonwebtoken;
+import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 export const authenticate = (req,res,next)=>{
     try{
-        const token = res.headers("Authorization");
-        if(!token)return res.send(401).send("unauthorized");
-        const usre = jwt.verify(token, process.end.SECRET_KEY);
-        
+        const token = req.headers["authorization"];
+        if(!token)return res.status(401).send("unauthorized");
+        const user = jwt.verify(token, process.env.SECRET_KEY);
+        req.user = user;
+        next()
     }catch(e){
         console.log(e);
-        res.send(500).send("internal server error");
+        res.status(500).send("internal server error");
     }
 }
