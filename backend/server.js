@@ -10,7 +10,20 @@ dotenv.config();
 const app = express();
 
 // Allow all origins for now (adjust as needed)
-app.use(cors({ origin: process.env.FRONTEND_URL || '*' }));
+app.use(cors({
+    origin: (origin, callback) => {
+        const allowedOrigins = [process.env.FRONTEND_URL];
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("CORS not allowed"));
+        }
+    },
+    credentials: true, // Allow cookies if needed
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization"
+}));
+
 
 app.use(express.json());
 
