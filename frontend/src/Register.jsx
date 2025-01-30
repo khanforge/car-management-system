@@ -1,11 +1,13 @@
 import React from 'react'
 
+
 const Register = () => {
     const [userForm, setUserForm] = React.useState({
         name:'',
         email:'',
         password:'',
     })
+    const [response, setResponse] = React.useState(null)
     const handleChange = (e)=>{
         setUserForm({...userForm, [e.target.name]:e.target.value});
     }
@@ -13,7 +15,8 @@ const Register = () => {
     const handleSubmit = async(e) => {
         e.preventDefault();
         try{
-            const response = await fetch('http://localhost:8080/api/auth/register',{ method:"POST", headers:{"Content-Type": "application/json"}, body:JSON.stringify(userForm)})
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/register`,{ method:"POST", headers:{"Content-Type": "application/json"}, body:JSON.stringify(userForm)});
+            setResponse(res);
         }catch(e){
             console.log(e)
         }
@@ -30,6 +33,9 @@ const Register = () => {
             src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
             className="mx-auto h-10 w-auto"
           />
+          <h1 className='bg-red-400 text-yellow-100'>
+            {response}
+          </h1>
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
             Sign Up
           </h2>
