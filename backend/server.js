@@ -18,6 +18,9 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/car', carRoutes);
 
+app.all("*", (req, res) => {
+  res.status(404).json({ error: "Route not found" });
+
 // Test route
 app.get('/', (req, res) => {
     res.send(`Server is ready at port ${process.env.PORT}`);
