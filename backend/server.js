@@ -14,25 +14,24 @@ app.use(cors({ origin: process.env.FRONTEND_URL || '*' }));
 
 app.use(express.json());
 
-// Define API routes
-app.use('/api/auth', authRoutes);
-app.use('/api/car', carRoutes);
 
+Connection()
+    .then(() => console.log('✅ Database connected successfully'))
+    .catch((err) => console.error('❌ Database connection failed:', err));
 
 // Test route
 app.get('/', (req, res) => {
     res.send(`Server is ready at port ${process.env.PORT}`);
 });
 
-app.all("*", (req, res) => {
-  res.status(404).json({ error: "Route not found" })
-});
-app.listen(process.env.PORT, ()=>{
+// Define API routes
+app.use('/api/auth', authRoutes);
+app.use('/api/car', carRoutes);
+
+
+process.env.PROD === "local" && app.listen(process.env.PORT, ()=>{
     console.log(`Server is ready at port ${process.env.PORT}`)
 })
-
-// Ensure the database is connected before handling requests
-await Connection();
 
 // Export the app for Vercel serverless functions
 export default app;

@@ -1,5 +1,5 @@
 import app from '../server.js';
 
-export default function handler(req, res) {
-    return app(req, res);
-}
+export default async (req, res) => {
+    await app.handle(req, res);
+};
