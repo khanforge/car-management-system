@@ -13,14 +13,14 @@ router.post('/register', async(req, res)=>{
             const {name, email, password} = req.body;
         const user = await User.findOne({email});
         if(user){
-            return res.status(400).send("User already exists");
+            return res.status(400).send({message:"User already exists"});
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({
             name, email, password: hashedPassword
         })
         await newUser.save();
-        res.status(200).send("User Registered Successfully");
+        res.status(200).send({message:"User Registered Successfully"});
     }catch(e){
         console.log(e);
         res.status(500).send("internal server error");
