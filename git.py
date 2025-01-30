@@ -1,7 +1,7 @@
 import os
 
 # commitMsg = input("Enter Commit Message: ")
-commitMsg = '''"updated the vercel.json"'''
+commitMsg = '''"updated the vercel.json and added api/index.js"'''
 print("git add . running")
 os.system("git add .")
 
