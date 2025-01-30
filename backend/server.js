@@ -20,8 +20,12 @@ app.use('/api/car', carRoutes);
 
 // Test route
 app.get('/', (req, res) => {
-    res.send("Server is ready");
+    res.send(`Server is ready at port ${process.env.PORT}`);
 });
+
+app.listen(process.env.PORT, ()=>{
+    console.log(`Server is ready at port ${process.env.PORT}`)
+})
 
 // Ensure the database is connected before handling requests
 await Connection();
