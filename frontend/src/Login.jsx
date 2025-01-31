@@ -1,7 +1,33 @@
+import {useState} from 'react'
+
 export default function Login() {
+  const[formData, setFormData] = useState({
+    email:"",
+    password:"",
+  })
+  const [response, setResponse] = useState(null)
+  let jwtToken = undefined;
+  const handleSubmit = async(e)=>{
+    e.preventDefault();
+    try{
+      const res = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/auth/login`, {method:"POST", headers:{'Content-Type':"Application/json"}, body:JSON.stringify(formData)});
+      const data = await res.json();
+      jwtToken =  data.token;
+      console.log(jwtToken)
+      setResponse(data);
+      console.log()
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+
+  const onChange = (e) => {
+    setFormData({...formData, [e.target.name]:e.target.value});
+  }
+
   return (
     <>
-      
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -15,7 +41,12 @@ export default function Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          {response &&
+            <h1 className='bg-green-400/70 rounded-md border-2 border-green-400 p-2 text-center text-red-700'>
+              {response ? response.message : "waiting for the response..."}
+            </h1>
+          }
+          <form onSubmit={handleSubmit} method="POST" className="space-y-6">
             
             <div>
               <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
@@ -26,6 +57,7 @@ export default function Login() {
                   id="email"
                   name="email"
                   type="email"
+                  onChange={onChange}
                   required
                   autoComplete="email"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -49,6 +81,7 @@ export default function Login() {
                   id="password"
                   name="password"
                   type="password"
+                  onChange={onChange}
                   required
                   autoComplete="current-password"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -61,7 +94,7 @@ export default function Login() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign Up
+                Login
               </button>
             </div>
           </form>

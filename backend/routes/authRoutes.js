@@ -33,9 +33,9 @@ router.post('/login', async(req, res)=>{
         const user = await User.findOne({email});
         if(!user)return res.status(400).send("user not found");
         const isMatch = await bcrypt.compare(password, user.password);
-        if(!isMatch)return res.status(400).send("invalid credentils");
+        if(!isMatch)return res.status(400).send("invalid credentials");
         const token = jwt.sign({id:user._id}, process.env.SECRET_KEY);
-        res.send({token});
+        res.send({token:token, message:"login successfull"});
     }catch(e){
         console.log(e);
         res.status(500).send("internal server error");

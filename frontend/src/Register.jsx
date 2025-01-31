@@ -15,12 +15,12 @@ const Register = () => {
     const handleSubmit = async(e) => {
         e.preventDefault();
         try{
-            console.log(import.meta.env.VITE_REACT_APP_API_URL)
             const res = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/auth/register`,{ method:"POST", headers:{"Content-Type": "application/json"}, body:JSON.stringify(userForm)});
             const data = await res.json();
-            setResponse(res);
-        }catch(e){
-            console.log(e)
+            setResponse(data);
+            console.log(data);
+        }catch(err){
+            console.log(err)
         }
         console.log(userForm.name, userForm.email, userForm.password)
     }
@@ -35,16 +35,17 @@ const Register = () => {
             src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
             className="mx-auto h-10 w-auto"
           />
-          <h1 className='bg-red-400 text-yellow-100'>
-            {response}
-          </h1>
+         
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
             Sign Up
           </h2>
         </div>
-
+         
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form onSubmit={handleSubmit} method="POST" className="space-y-6">
+          <h1 className='bg-green-400/70 rounded-md border-2 border-green-400 p-2 text-center text-red-700'>
+            {response ? response.message : "waiting for the response..."}
+          </h1>
+          <form onSubmit={handleSubmit} method="POST" className="space-y-6 mt-5">
             <div>
               <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                 Full Name
