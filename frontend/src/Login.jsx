@@ -1,19 +1,26 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
+import { useSelector,  useDispatch} from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { authActions } from '../store/auth';
 
 export default function Login() {
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn)
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
+
   const[formData, setFormData] = useState({
     email:"",
     password:"",
   })
   const [response, setResponse] = useState(null)
-  let jwtToken = undefined;
   const handleSubmit = async(e)=>{
     e.preventDefault();
     try{
       const res = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/auth/login`, {method:"POST", headers:{'Content-Type':"Application/json"}, body:JSON.stringify(formData)});
       const data = await res.json();
-      jwtToken =  data.token;
-      console.log(jwtToken)
+      const user = {id:data.id, token:data.token}
+      localStorage.setItem("user", JSON.stringify(user));
+      dispatch(authActions.login());
       setResponse(data);
       console.log()
     }

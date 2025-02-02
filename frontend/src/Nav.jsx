@@ -1,8 +1,9 @@
 import React from 'react'
-import { useAuth } from "./context/AuthContext"; 
 import {Link} from 'react-router-dom'
+import { useSelector } from 'react-redux';
+
 const Nav = ({children}) => {
-    const { user, logout } = useAuth(); 
+    const isLoggedIn = useSelector((state)=>state.auth.isLoggedIn)
     const navLinks = [
     // Public Routes (Before Login)
     { name: "Home", path: "/", icon: "🏠", authRequired: false },
@@ -25,7 +26,7 @@ const Nav = ({children}) => {
             </div>
             <div id="links">
               <ul className="flex justify-center items-cente gap-10 text-slate-300">
-                {navLinks.filter((link)=>(user ? true : !link.authRequired)).map((link, index)=>(
+                {navLinks.filter((link)=>(isLoggedIn ? link.authRequired : !link.authRequired)).map((link, index)=>(
                     <li key={index}>
                         <Link to={link.path}>
                             {link.icon} {link.name}

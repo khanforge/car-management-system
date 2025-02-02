@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post('/register', async(req, res)=>{
     try{
-            const {name, email, password} = req.body;
+        const {name, email, password} = req.body;
         const user = await User.findOne({email});
         if(user){
             return res.status(400).send({message:"User already exists"});
@@ -31,14 +31,14 @@ router.post('/login', async(req, res)=>{
     try{
         const {email, password} = req.body;
         const user = await User.findOne({email});
-        if(!user)return res.status(400).send("user not found");
+        if(!user)return res.status(400).send({message: "user not found"});
         const isMatch = await bcrypt.compare(password, user.password);
-        if(!isMatch)return res.status(400).send("invalid credentials");
-        const token = jwt.sign({id:user._id}, process.env.SECRET_KEY);
-        res.send({token:token, message:"login successfull"});
+        if(!isMatch)return res.status(400).send({message: "invalid credentials"});
+        const token = jwt.sign({id: user._id}, process.env.SECRET_KEY, {expiresIn: "1d"});
+        res.send({id:user._id ,token:token, message:"login successfull"});
     }catch(e){
         console.log(e);
-        res.status(500).send("internal server error");
+        res.status(500).send({message: "internal server error"});
     }
 })
 

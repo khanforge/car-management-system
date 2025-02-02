@@ -1,7 +1,13 @@
-import React from 'react'
-
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
+import { authActions } from '../store/auth';
 
 const Register = () => {
+    const isLoggedIn = useSelector((state)=>state.auth.isLoggedIn);
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
     const [userForm, setUserForm] = React.useState({
         name:'',
         email:'',
@@ -17,6 +23,7 @@ const Register = () => {
         try{
             const res = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/auth/register`,{ method:"POST", headers:{"Content-Type": "application/json"}, body:JSON.stringify(userForm)});
             const data = await res.json();
+            navigate('/login');
             setResponse(data);
             console.log(data);
         }catch(err){

@@ -1,8 +1,8 @@
+import { useEffect } from 'react'
+import { useNavigate, Outlet } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { authActions } from '../store/auth'
 
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import HomePage from './pages/HomePage'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
 /**
  * Main application component that sets up routing for different pages.
  *
@@ -18,45 +18,21 @@ function App() {
    * - `/call-for-papers`: Displays Nav, Carousel, ListView with conferenceTracks data, and Footer.
    * - `/org-committee`: Displays Nav, Carousel, OrgCommittee, and Footer components.
    */
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: (
-        <>
-          <HomePage/>
-        </>
-      )
-    },
-    {
-      path: "/login",
-      element: (
-        <>
-          <LoginPage/>
-        </>
-      )
-    },
-    {
-      path: "/register",
-      element: (
-        <>
-          <RegisterPage/>
-        </>
-      )
-    },
-  ],
-  /**
-   * Base path for the application, used when deploying on GitHub Pages.
-   * Uncomment the line below for the appropriate deployment path.
-   */
-  // { basename: "/temsmet.github.io" }, // for GitHub Pages deployment
-  // { basename: "/temsmet2025-r" } // for GitHub Pages deployment
-  )
+  const navigate = useNavigate()
+  const isLoggedIn = useSelector(state=>state.auth.isLoggedIn)
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    const user = JSON.parse(localStorage.getItem("user"));
+    if(user != null){
+      console.log("user")
+      dispatch(authActions.login());
+    }
+    if(isLoggedIn)navigate('/')
+    else navigate('/login')
+  }, [navigate, isLoggedIn])
 
-  return (
-    <>
-      <RouterProvider router={router} />  
-    </>
-  )
+  
+  return (<Outlet/>)
 }
 
 export default App
