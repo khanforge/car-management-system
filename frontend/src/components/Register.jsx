@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
-import { authActions } from '../store/auth';
+import { authActions } from '../../store/auth';
 
 const Register = () => {
     const isLoggedIn = useSelector((state)=>state.auth.isLoggedIn);

@@ -1,6 +1,6 @@
 import React from 'react'
-import Nav from '../Nav'
-import Register from '../Register'
+import Nav from '../components/Nav'
+import Register from '../components/Register'
 const RegisterPage = () => {
   return (
     <Nav>

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import Nav from '../Nav'
-import Home from '../Home'
+import Nav from '../components/Nav'
+import Home from '../components/Home'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 

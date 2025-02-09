@@ -3,7 +3,8 @@ import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import App from './App'
-import Logout from './Logout'
+import Logout from './components/Logout'
+import AddCarPage from './pages/AddCarPage'
 
 const routerApp = createBrowserRouter([
     {
@@ -32,6 +33,12 @@ const routerApp = createBrowserRouter([
                 path:'/logout',
                 element:(
                     <Logout/>
+                )
+            },
+            {
+                path:'/add-car',
+                element:(
+                    <AddCarPage/>
                 )
             }
         ]
